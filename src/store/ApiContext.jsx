@@ -9,10 +9,10 @@ export const ApiContext = ({ children }) => {
     const [totalcatagory, settotalcatagory] = useState([])
     const [albumsByCategory, setAlbumsByCategory] = useState({});
     const [hasMore, setHasMore] = useState(true); // 🔑 NEW
-
+    const [screen, setScreen] = useState(true)
     const [page, setpage] = useState(1)
     const limit = 3;
-
+    let allOk = true;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,6 +44,11 @@ export const ApiContext = ({ children }) => {
                             headers: { 'x-api-key': import.meta.env.VITE_API_KEY },
                         });
 
+
+                        if (albumRes.status !== 200) {
+                            allOk = false;
+                        }
+
                         const albumDecrypted = decryptData(albumRes.data.encryptedData);
 
                         setAlbumsByCategory(prev => ({
@@ -52,9 +57,18 @@ export const ApiContext = ({ children }) => {
                         }));
                     } catch (albumErr) {
                         console.error("Album fetch failed for", cat.catagory_name, albumErr);
+                        allOk = false;
                     }
                 }
-
+                if (allOk) {
+                    // smooth transition (Start → AppLayout)
+                    setTimeout(() => {
+                        setScreen(false);
+                    }, 500);
+                } else {
+                    // Start SCREEN must stay ON — no white screen
+                    setScreen(true);
+                }
             } catch (err) {
                 console.error("Category fetch failed", err);
                 settotalcatagory([]);
@@ -73,7 +87,7 @@ export const ApiContext = ({ children }) => {
 
     return (
         <>
-            <Context1.Provider value={{ handelclik, totalcatagory, albumsByCategory, hasMore }}>{children}</Context1.Provider>
+            <Context1.Provider value={{ screen, handelclik, totalcatagory, albumsByCategory, hasMore }}>{children}</Context1.Provider>
         </>
     )
 }

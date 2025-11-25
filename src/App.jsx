@@ -5,7 +5,7 @@ import { ApiContext } from "./store/ApiContext";
 import { useMediaSession } from "./Props/useMediaSession";
 
 // ✅ Lazy load components
-const Applayout = lazy(() => import("./layout/Applayout").then(m => ({ default: m.Applayout })));
+import { Applayout } from "./layout/Applayout";
 const Signin = lazy(() => import("./pages/Signin").then(m => ({ default: m.Signin })));
 const Signup = lazy(() => import("./pages/Signup").then(m => ({ default: m.Signup })));
 const Reset = lazy(() => import("./pages/Reset").then(m => ({ default: m.Reset })));

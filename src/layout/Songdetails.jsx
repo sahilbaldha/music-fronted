@@ -7,7 +7,7 @@ import { decryptData } from "../store/Secure";
 import { FaPause } from "react-icons/fa6";
 import { LikeButton } from "../Props/likesongs";
 import { Songplaylist } from "../Props/songplaylist";
-
+import { Start } from "../pages/Start";
 export const SongDetails = () => {
         const API_URL = import.meta.env.VITE_API_URL;
     const { showHeader, updateCurrentSong, setSongList, togglePlay, isPlaying, likedSongs, fottersong, fottersongdetails } = useContext(Context)
@@ -120,7 +120,9 @@ export const SongDetails = () => {
         togglePlay();
     };
 
-
+if (!albumdetails || Object.keys(albumdetails).length === 0) {
+    return <Start/>;
+}
 
     return (
         <>
